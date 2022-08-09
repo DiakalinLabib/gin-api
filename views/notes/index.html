@@ -1,0 +1,45 @@
+{{ define "notes/index" }}
+{{ template "globals/before" .}}
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-header">
+                Create New Note
+            </div>
+            <div class="card-body">
+                <form class="row" method="post">
+                    <div class="col-auto">
+                        <label for="content" class="visually-hidden">Content</label>
+                        <input type="text" class="form-control" id="content" name="content" placeholder="Content">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-header">
+                Note Lists
+            </div>
+            <ul class="list-group list-group-flush">
+                {{range $index, $note := .notes}}
+                <li class="list-group-item">
+                    {{if $note.IsDone}}
+                    {{ add $index 1 }} - <del>{{ $note.Content }}</del>
+                    {{ else }}
+                    {{ add $index 1 }} - {{ $note.Content }}
+                    {{ end }}
+                    <a href="/notes/{{ $note.ID }}/delete">Delete</a>
+                    |
+                    {{if $note.IsDone}}
+                    <a href="/notes/{{ $note.ID }}/done">UnDone</a>
+                    {{ else }}
+                    <a href="/notes/{{ $note.ID }}/done">Done</a>
+                    {{ end }}
+                </li>
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+{{ template "globals/after" .}}
+{{ end }}
